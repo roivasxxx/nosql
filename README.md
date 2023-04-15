@@ -4,9 +4,14 @@ run with
 
 docker-compose up -d
 
+docker cp faculties.js mongodb:/tmp
 docker exec -it mongodb bash
 
 mongosh --username root --password password --authenticationDatabase admin
+
+# to load file
+
+mongosh --username root --password password --authenticationDatabase admin ./tmp/faculties.js
 
 mongo-express available at http://localhost:8081
 
@@ -36,6 +41,4 @@ mongo-express available at http://localhost:8081
 
 # misc
 
-mongosh docs https://www.mongodb.com/docs/mongodb-shell/
-data generated with https://www.mockaroo.com
-er-diagram created with https://dbdiagram.io/d/643aa2846b31947051a4dd89
+load script -> load("myjstest.js")
