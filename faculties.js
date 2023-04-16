@@ -6,10 +6,17 @@ db.createCollection("faculties", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["name"],
+      required: ["name", "shortcut"],
       properties: {
         name: {
-          bsonType: "string"
+          bsonType: "string",
+          minLength: 0,
+          description: "Faculty name"
+        },
+        shortcut: {
+          bsonType: "string",
+          minLength: 0,
+          description: "Faculty name shorcut"
         }
       }
     }

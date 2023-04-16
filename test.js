@@ -1,11 +1,22 @@
+db = connect(
+  "mongodb://root:password@127.0.0.1:27017/test?replicaSet=replSet&authSource=admin&directConnection=true"
+);
+
 db.createCollection("faculties", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["name"],
+      required: ["name", "shortcut"],
       properties: {
         name: {
-          bsonType: "string"
+          bsonType: "string",
+          minLength: 0,
+          description: "Faculty name"
+        },
+        shortcut: {
+          bsonType: "string",
+          minLength: 0,
+          description: "Faculty name shorcut"
         }
       }
     }
@@ -46,10 +57,10 @@ db.createCollection("threads", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["course_id", "title", "post_count", "last_post"],
+      required: ["course_id", "title"],
       properties: {
         faculty_id: {
-          bsonType: "course_id",
+          bsonType: "objectId",
           description: "ObjectId of an object from courses collection"
         },
         title: {
@@ -58,7 +69,7 @@ db.createCollection("threads", {
           description: "Thread title"
         },
         last_post: {
-          bsonType: "ObjectId",
+          bsonType: "objectId",
           description: "ObjectId of the most recent post in thread"
         },
         post_count: {
@@ -78,11 +89,11 @@ db.createCollection("posts", {
       required: ["author_id", "thread_id", "created_at", "text"],
       properties: {
         author_id: {
-          bsonType: "ObjectId",
+          bsonType: "objectId",
           description: "ObjectId of post author - taken from users collection"
         },
         thread_id: {
-          bsonType: "ObjectId",
+          bsonType: "objectId",
           description: "ObjectId of thread"
         },
         text: {
@@ -112,7 +123,7 @@ db.createCollection("posts", {
   }
 });
 
-db.createCollection("posts", {
+db.createCollection("users", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
@@ -122,8 +133,7 @@ db.createCollection("posts", {
           bsonType: "string",
           minLength: 0,
           maxLength: 96,
-          pattern:
-            '/^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/',
+          pattern: "^.+@.+$",
           description: "User email"
         },
         salt: {
@@ -137,11 +147,11 @@ db.createCollection("posts", {
           description: "User password - hashed"
         },
         created_at: {
-          bsonType: "timestamp",
+          bsonType: "date",
           description: "Timestamp of user creation"
         },
         last_login: {
-          bsonType: "timestamp",
+          bsonType: "date",
           description: "Timestamp of last login"
         },
         available_login_attemps: {
