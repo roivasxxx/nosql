@@ -76,6 +76,15 @@ db.createCollection("threads", {
           bsonType: "int",
           minimum: 0,
           description: "Count of all thread posts"
+        },
+        notifications: {
+          bsonType: "array",
+          items: {
+            bsonType: "objectId",
+            description: "User objectId"
+          },
+          uniqueItems: true,
+          description: "Array of user ids - notifications"
         }
       }
     }
@@ -102,12 +111,12 @@ db.createCollection("posts", {
           description: "Post text data - the actual content of the post"
         },
         created_at: {
-          bsonType: "timestamp",
-          description: "Timestamp of post creation"
+          bsonType: "Date",
+          description: "Date of post creation"
         },
         updated_at: {
-          bsonType: "timestamp",
-          description: "Timestamp of last update"
+          bsonType: "Date",
+          description: "Date of last update"
         },
         replying_to: {
           bsonType: "array",
@@ -148,19 +157,73 @@ db.createCollection("users", {
         },
         created_at: {
           bsonType: "date",
-          description: "Timestamp of user creation"
+          description: "Date of user creation"
         },
         last_login: {
           bsonType: "date",
-          description: "Timestamp of last login"
+          description: "Date of last login"
         },
         available_login_attemps: {
           bsonType: "number",
           minimum: 0,
           maximum: 10,
           description: "Available login attemps"
+        },
+        allow_message_notifications: {
+          bsonType: "bool",
+          description:
+            "Flag that says whether user wants to be notified about new messages"
         }
       }
     }
   }
 });
+
+db.createCollection("Conversations", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["user1", "user2"],
+      properties: {
+        user1: {
+          bsonType: "objectId",
+          description: "Id of first user"
+        },
+        user2: {
+          bsonType: "objectId",
+          description: "Id of second user"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("ConversationMessages", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["conversation_id", "author", "message"],
+      properties: {
+        conversation_id: {
+          bsonType: "objectId",
+          description: "Id of conversation"
+        },
+        author: {
+          bsonType: "objectId",
+          description: "Id of author"
+        },
+        message: {
+          bsonType: "string",
+          minLength: 0,
+          description: "Raw text"
+        },
+        sent_at: {
+          bsonType: "date",
+          description: "Date of creation"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("Notifications");

@@ -25,7 +25,7 @@ const addNewThread = (threadInput, courseName) => {
 
   if (!courseId) {
     console.error(
-      `Can not add thread,because no course with courseName: ${courseName} was found.`
+      `Can not add thread, because no course with courseName=${courseName} was found.`
     );
     return;
   }

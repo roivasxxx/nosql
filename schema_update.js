@@ -59,6 +59,11 @@
 //           minimum: 0,
 //           maximum: 10,
 //           description: "Available login attemps"
+//         },
+//         allow_message_notifications: {
+//           bsonType: "bool",
+//           description:
+//             "Flag that says whether user wants to be notified about new messages"
 //         }
 //       }
 //     }
@@ -94,6 +99,15 @@ db.runCommand({
           bsonType: "int",
           minimum: 0,
           description: "Count of all thread posts"
+        },
+        notifications: {
+          bsonType: "array",
+          items: {
+            bsonType: "objectId",
+            description: "User objectId"
+          },
+          uniqueItems: true,
+          description: "Array of user ids - notifications"
         }
       }
     }
