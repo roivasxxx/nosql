@@ -54,17 +54,52 @@ const addNewThread = (_threadData, courseName,postData) => {
   console.debug("UPDATED COURSE COUNT", courseUpdateResult);
 };
 //testing user id ObjectId("643e670e2364bc4a4efda47f"
-addNewThread(
-  {
-    title: "New thread for ZMAT1 #2",
-    author: "ADMIN"
-  },
-  "Základy matematiky 1",
-  {
+// addNewThread(
+//   {
+//     title: "New thread for ZMAT1 #2",
+//     author: "ADMIN"
+//   },
+//   "Základy matematiky 1",
+//   {
+//     author_id:ObjectId("643e670e2364bc4a4efda47f"),
+//     created_at:new Date(),
+//     text:"Testing posts"
+//   }
+// );
+
+
+const addNewPost = (threadId,_postData)=>{
+
+  const threads = db.threads.find({_id:threadId})
+
+  const threadObject = threads.hasNext() ? threads.next() : null;
+  
+  if(!threadObject){
+    console.error(`Can not add post,bceause thread with provided threadId:${threadId} was not found. `)
+    return
+  }
+
+  console.debug("CURRENT THREAD COUNT:",threadObject)
+
+  const postInsertResult = db.posts.insertOne({..._postData,thread_id:threadId})
+
+  console.debug("POST INSERT RESULT: ", postInsertResult)
+
+  const postId = postInsertResult.insertedId
+
+  const threadUpdateResult = db.threads.updateOne({_id:threadId},{$set:{
+    "post_count":threadObject.post_count ? threadObject.post_count+1:1,"last_post":postId
+  }})
+
+console.debug("THREAD UPDATE RESULT: ",threadUpdateResult)
+
+}
+
+
+//db.courses.find({post_count:{$exists:false}}) checking if field exists
+//test thread ObjectId("643e6a29adfd24a0268a4b25")
+addNewPost(ObjectId("643e6a29adfd24a0268a4b25"),  {
     author_id:ObjectId("643e670e2364bc4a4efda47f"),
     created_at:new Date(),
     text:"Testing posts"
-  }
-);
-
-
+  })
