@@ -7,7 +7,7 @@ docker-compose up -d
 docker cp faculties.js mongodb:/tmp
 docker exec -it mongodb bash
 
-mongosh --username root --password password --authenticationDatabase admin
+    mongosh --username root --password password --authenticationDatabase admin
 
 # to load file
 
