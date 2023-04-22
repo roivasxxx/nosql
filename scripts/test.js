@@ -186,11 +186,11 @@ db.createCollection("Conversations", {
       required: ["user1", "user2"],
       properties: {
         user1: {
-          bsonType: "objectId",
+          bsonType: ["null", "objectId"],
           description: "Id of first user"
         },
         user2: {
-          bsonType: "objectId",
+          bsonType: ["null", "objectId"],
           description: "Id of second user"
         }
       }

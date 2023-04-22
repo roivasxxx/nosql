@@ -1,26 +1,24 @@
 // example cmd for updating existing collection schema
 
-// db.runCommand({
-//   collMod: "faculties",
-//   validator: {
-//     $jsonSchema: {
-//       bsonType: "object",
-//       required: ["name", "shortcut"],
-//       properties: {
-//         name: {
-//           bsonType: "string",
-//           minLength: 0,
-//           description: "Faculty name"
-//         },
-//         shortcut: {
-//           bsonType: "string",
-//           minLength: 0,
-//           description: "Faculty name shorcut"
-//         }
-//       }
-//     }
-//   }
-// });
+db.runCommand({
+  collMod: "Conversations",
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["user1", "user2"],
+      properties: {
+        user1: {
+          bsonType: ["objectId", "null"],
+          description: "Id of first user"
+        },
+        user2: {
+          bsonType: ["objectId", "null"],
+          description: "Id of second user"
+        }
+      }
+    }
+  }
+});
 
 // db.runCommand({
 //   collMod: "users",
@@ -70,46 +68,46 @@
 //   }
 // });
 
-db.runCommand({
-  collMod: "threads",
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["course_id", "title", "author"],
-      properties: {
-        faculty_id: {
-          bsonType: "objectId",
-          description: "ObjectId of an object from courses collection"
-        },
-        author: {
-          bsonType: ["string", "objectId"],
-          description:
-            "If typeof author is string -> made by admin, otherwise made by regular user"
-        },
-        title: {
-          bsonType: "string",
-          minLength: 0,
-          description: "Thread title"
-        },
-        last_post: {
-          bsonType: "objectId",
-          description: "ObjectId of the most recent post in thread"
-        },
-        post_count: {
-          bsonType: "int",
-          minimum: 0,
-          description: "Count of all thread posts"
-        },
-        notifications: {
-          bsonType: "array",
-          items: {
-            bsonType: "objectId",
-            description: "User objectId"
-          },
-          uniqueItems: true,
-          description: "Array of user ids - notifications"
-        }
-      }
-    }
-  }
-});
+// db.runCommand({
+//   collMod: "threads",
+//   validator: {
+//     $jsonSchema: {
+//       bsonType: "object",
+//       required: ["course_id", "title", "author"],
+//       properties: {
+//         faculty_id: {
+//           bsonType: "objectId",
+//           description: "ObjectId of an object from courses collection"
+//         },
+//         author: {
+//           bsonType: ["string", "objectId"],
+//           description:
+//             "If typeof author is string -> made by admin, otherwise made by regular user"
+//         },
+//         title: {
+//           bsonType: "string",
+//           minLength: 0,
+//           description: "Thread title"
+//         },
+//         last_post: {
+//           bsonType: "objectId",
+//           description: "ObjectId of the most recent post in thread"
+//         },
+//         post_count: {
+//           bsonType: "int",
+//           minimum: 0,
+//           description: "Count of all thread posts"
+//         },
+//         notifications: {
+//           bsonType: "array",
+//           items: {
+//             bsonType: "objectId",
+//             description: "User objectId"
+//           },
+//           uniqueItems: true,
+//           description: "Array of user ids - notifications"
+//         }
+//       }
+//     }
+//   }
+// });
