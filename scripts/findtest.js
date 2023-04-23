@@ -190,4 +190,84 @@ const deleteUser = (userId) => {
 };
 
 //db.Conversations.updateOne({_id:ObjectId("6444287781c35de3cc0406ba")},[{$set:{user1:"$user2"}}])
-deleteUser(ObjectId("643c1780692fd0f1a8cc9ef3"));
+//deleteUser(ObjectId("643c1780692fd0f1a8cc9ef3"));
+
+const createConversation = (user1, user2) => {
+  try {
+    const conversationQuery = db.Conversations.insertOne({ user1, user2 });
+    console.debug("INSERT CONVERSATION RESULT: ", conversationQuery);
+
+    return conversationQuery.insertedId;
+  } catch (error) {
+    console.error(
+      "AN ERROR HAS OCCURRED WHILE CREATING NEW CONVERSATION: ",
+      error
+    );
+    return null;
+  }
+};
+
+const areUsersValid = (user1, user2) => {
+  const users = db.users
+    .find({ $or: [{ _id: user1 }, { _id: user2 }] })
+    .toArray();
+  if (users.length === 2) {
+    return true;
+  }
+  return false;
+};
+
+// ObjectId("644427022dec6e9fd9e410ba")
+//ObjectId('6444277a8f8e59687d507b26')
+
+const sendMessage = (authorId, recipientId, message) => {
+  //check if users exist
+  if (!areUsersValid) {
+    console.error(
+      "Can not send message, because one or both users do not exist"
+    );
+    return;
+  }
+  //get existing conversation id
+  const existingConversation = db.Conversations.find(
+    {
+      $or: [
+        {
+          $and: [{ user1: authorId }, { user2: recipientId }]
+        },
+        {
+          $and: [{ user1: recipientId }, { user2: authorId }]
+        }
+      ]
+    },
+    { _id: 1 }
+  ).toArray();
+
+  //get conversationId
+  let conversationId =
+    existingConversation.length === 0
+      ? createConversation(authorId, recipientId)
+      : existingConversation[1];
+  if (!conversationId) {
+    console.error("Can not create conversation");
+    return;
+  }
+
+  //create message
+  const messagesQuery = db.ConversationMessages.insertOne({
+    ...message,
+    conversation_id: conversationId,
+    created_at: new Date(),
+    author: authorId
+  });
+
+  console.debug("MESSAGES QUERY RESULT: ", messagesQuery);
+
+  console.debug("FINISHED sendMessage");
+};
+
+sendMessage(
+  ObjectId("644427022dec6e9fd9e410ba"),
+  ObjectId("6444277a8f8e59687d507b26"),
+  { message: "testing messages" }
+);

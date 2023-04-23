@@ -227,3 +227,14 @@ db.createCollection("ConversationMessages", {
 });
 
 db.createCollection("Notifications");
+
+db.faculties.aggregate([
+  {
+    $lookup: {
+      from: "courses",
+      localField: "faculty_id",
+      foreignField: "_id",
+      as: "faculties_courses"
+    }
+  }
+]);
