@@ -42,13 +42,40 @@ const faculty_courses_join = db.faculties.aggregate([
 ]);
 
 
-console.debug(faculty_courses_join.toArray())
+// console.debug(faculty_courses_join.toArray())
 // console.debug(faculty_courses_join.explain("executionStats"))
 
+//course_shortcuts:{$sortArray:{sortBy:1,input:{$map: { input: "$faculties_courses", as: "t", in: {shortcut:"$$t.shortcut",name:"$$t.name"}}}}},
 
+const usersQ=db.users.aggregate([{
+  $lookup: {
+      from: "threads",
+      let:{id:"$_id"},
+      pipeline:[{
+        $match:{
+          $expr:{
 
+            $in:["$$id","$notifications"]}
+          }
+        
+      }],
+      as: "thread_notifications"
+    }
+},{
+  $project:{
+    _id:0,
+    email:1,
+    nickname:1,
+    created_at:1,
+    thread_notifications:{
+      $map:
+        { input: "$thread_notifications", as: "t", in: "$$t._id"}
+    
+    }
+  }
+}])
 
-
+console.debug(usersQ.toArray())
 
 // db.faculties
 //   .explain("executionStats")

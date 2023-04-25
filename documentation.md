@@ -9,4 +9,6 @@
 
 - Zobrazit fakulty -> ukázat počet courses, ukázat počet všech threads pod fakultami, zobrazit array courses.shortcut
 
-- Zobrazit usera - jím založené threads, 
+- Zobrazit usera - mail, nick, datum registrace, threads u kterých má notifikace , 
+
+- doable course_shortcuts:{$sortArray:{sortBy:1,input:{$map: { input: "$faculties_courses", as: "t", in: {shortcut:"$$t.shortcut",name:"$$t.name"}}}}},
