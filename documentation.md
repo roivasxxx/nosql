@@ -5,3 +5,8 @@
 - ~~Smazaní usera -> kontrola conversations -> pokud found conversation má dva deleted usery -> smaže všechny conversationMessages pro found conversation, smaže usera z notifications array u všech threads~~
 - Odeslání nové zprávy -> existing conversation => přidá do conversationMessages/ vytvoří conversation a přidá message do conversationMessages
 - Smazání threadu -> smaže všechny posty, notifikace o threadu
+
+
+- Zobrazit fakulty -> ukázat počet courses, ukázat počet všech threads pod fakultami, zobrazit array courses.shortcut
+
+- Zobrazit usera - jím založené threads, 
