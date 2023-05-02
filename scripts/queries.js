@@ -122,6 +122,63 @@ const userConversationQuery = db.users.aggregate([
 
 console.debug("CONVERSATIONS: ", userConversationQuery.toArray());
 
+const conversationMessagesQuery=db.Conversations.aggregate([
+  {
+    $lookup:{
+      from:"ConversationMessages",
+      localField:"_id",
+      foreignField:"conversation_id"
+      ,as:"messages"
+    }
+  },{
+    $project:{
+      _id:1,
+      messages:{
+        $map:{
+          input:"$messages",as:"msg",in:"$$msg._id"
+        }
+      }
+    }
+  }
+])
+
+console.debug("CONVERSATION MESSAGES:",conversationMessagesQuery.toArray())
+
+
+const userNotificationsQuery= db.users.aggregate([
+  {
+    $lookup:{
+      from:"notifications",
+      localField:"_id",
+      foreignField:"user",
+      as:"notifications"
+    }
+  },
+  {
+    $unset:["password","salt","email","nickname","created_at"]
+  },
+  {
+    $match:{
+      $expr:{
+        $gt:[
+          {$size:"$notifications"},0
+        ] 
+      }
+    }
+  }
+])
+
+const userNotificationQueryAlt = db.notifications.aggregate([
+{
+    $group:{
+      _id:"$user",notifications:{$push:"$$ROOT"}
+    }
+  }
+])
+
+console.debug("USER NOTIFICATIONS:",userNotificationsQuery.toArray())
+console.debug("ALT NOTIFICATIONS:",userNotificationQueryAlt.toArray())
+
 // db.faculties
 //   .explain("executionStats")
 //   .aggregate([

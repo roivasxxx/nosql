@@ -7,8 +7,14 @@
 - Smazání threadu -> smaže všechny posty, notifikace o threadu
 
 
-- Zobrazit fakulty -> ukázat počet courses, ukázat počet všech threads pod fakultami, zobrazit array courses.shortcut
+- ~~Zobrazit fakulty -> ukázat počet courses, ukázat počet všech threads pod fakultami, zobrazit array courses.shortcut~~
 
-- Zobrazit usera - mail, nick, datum registrace, threads u kterých má notifikace , 
+- ~~Zobrazit usera - mail, nick, datum registrace, threads u kterých má notifikace ,~~ 
+
+- ~~Zobrazit usera + jeho konverzace~~
+
+- ~~Pro konverzace matchnout ConversationMessages~~
+
+- Pro usery zobrazit notifikace
 
 - doable course_shortcuts:{$sortArray:{sortBy:1,input:{$map: { input: "$faculties_courses", as: "t", in: {shortcut:"$$t.shortcut",name:"$$t.name"}}}}},
