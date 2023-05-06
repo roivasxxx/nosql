@@ -15,6 +15,10 @@ mongosh --username root --password password --authenticationDatabase admin ./tmp
 
 mongo-express available at http://localhost:8081
 
+# to import data run:
+
+bash ./data/scripts/data_load/import-data.sh
+
 ## ~~#1 - ER-DIAGRAM DONE~~
 
 ## ~~#2 - docker file DONE~~

@@ -27,7 +27,7 @@ db.createCollection("courses", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["faculty_id", "name", "shortcut", "thread_count"],
+      required: ["faculty_id", "name", "shortcut"],
       properties: {
         faculty_id: {
           bsonType: "objectId",
@@ -42,11 +42,6 @@ db.createCollection("courses", {
           bsonType: "string",
           minLength: 0,
           description: "Shortcut of course - ex. ZMAT1"
-        },
-        thread_count: {
-          bsonType: "int",
-          minimum: 0,
-          description: "Count of all course threads"
         }
       }
     }
@@ -59,7 +54,7 @@ db.createCollection("threads", {
       bsonType: "object",
       required: ["course_id", "title"],
       properties: {
-        faculty_id: {
+        course_id: {
           bsonType: "objectId",
           description: "ObjectId of an object from courses collection"
         },
@@ -67,15 +62,6 @@ db.createCollection("threads", {
           bsonType: "string",
           minLength: 0,
           description: "Thread title"
-        },
-        last_post: {
-          bsonType: "objectId",
-          description: "ObjectId of the most recent post in thread"
-        },
-        post_count: {
-          bsonType: "int",
-          minimum: 0,
-          description: "Count of all thread posts"
         },
         notifications: {
           bsonType: "array",
@@ -140,19 +126,19 @@ db.createCollection("users", {
       properties: {
         email: {
           bsonType: "string",
-          minLength: 0,
+          minLength: 10,
           maxLength: 96,
           pattern: "^.+@.+$",
           description: "User email"
         },
         salt: {
           bsonType: "string",
-          minLength: 0,
+          minLength: 1,
           description: "Salt for password"
         },
         password: {
           bsonType: "string",
-          minLength: 0,
+          minLength: 8,
           description: "User password - hashed"
         },
         created_at: {

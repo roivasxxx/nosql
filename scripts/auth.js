@@ -1,5 +1,10 @@
-console.debug("auth")
+console.debug("Starting auth");
+
+const { MONGO_USER, MONGO_PW, DB_NAME } = process.env;
+
+console.debug(process.env);
+
 db = connect(
-  "mongodb://root:password@127.0.0.1:27017/test?replicaSet=replSet&authSource=admin&directConnection=true"
-)
-console.debug("auth end")
+  `mongodb://${MONGO_USER}:${MONGO_PW}@127.0.0.1:27017/${DB_NAME}?replicaSet=replSet&authSource=admin&directConnection=true`
+);
+console.debug("Auth finished");

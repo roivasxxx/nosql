@@ -1,0 +1,30 @@
+[
+  {
+    "_id": {
+      "$oid": "643bfb389cb96cec44d89a29"
+    },
+    "name": "Fakulta informatiky a managementu",
+    "shortcut": "FIM"
+  },
+  {
+    "_id": {
+      "$oid": "643c06fff8041c69909c405d"
+    },
+    "name": "Přírodovědecká fakulta",
+    "shortcut": "PřF"
+  },
+  {
+    "_id": {
+      "$oid": "643c06fff8041c69909c405e"
+    },
+    "name": "Filozofická fakulta a ÚSP",
+    "shortcut": "FF"
+  },
+  {
+    "_id": {
+      "$oid": "643c06fff8041c69909c405f"
+    },
+    "name": "Pedagogická fakulta",
+    "shortcut": "PdF"
+  }
+]
