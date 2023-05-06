@@ -10,11 +10,11 @@ let users = JSON.parse(usersJson);
 users = users.map((user) => {
   return {
     ...user,
-    created_at: new Date(user.created_at),
-    last_login: new Date(user.last_login)
+    created_at: user.created_at,
+    last_login: user.last_login
   };
 });
 
-db.userstest.insertMany(users);
+db.userstest.insertMany(EJSON.deserialize(users));
 
 console.debug("finished");
