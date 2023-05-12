@@ -1,29 +1,42 @@
 # nosql school course
 
-run with
+## run with
 
 docker-compose up -d
-
-docker cp faculties.js mongodb:/tmp
 docker exec -it mongodb bash
+~~docker cp faculties.js mongodb:/tmp~~
 
-    mongosh --username root --password password --authenticationDatabase admin
+## to use mongosh run:
 
+mongosh --username root --password password --authenticationDatabase admin
 
-# validation errors
-bellow command needs to be run in mongosh -> docker restarted in order to get detailed validation errors
-db.adminCommand( { setFeatureCompatibilityVersion: "5.0" } )
-
-
-# to load file
-
-mongosh --username root --password password --authenticationDatabase admin ./tmp/faculties.js
+## mongo-express
 
 mongo-express available at http://localhost:8081
 
-# to import data run:
+# LOADING JS SCRIPTS
+
+mongosh --username root --password password --authenticationDatabase admin ./tmp/faculties.js
+
+# VALIDATION
+
+## bellow command needs to be run in mongosh -> docker restarted in order to get detailed validation errors
+
+db.adminCommand( { setFeatureCompatibilityVersion: "5.0" } )
+
+# DATA IMPORT
+
+## to import data run:
 
 bash ./data/scripts/import-data.sh
+
+# BACKUP
+
+## backup should be available in docker at ./BACKUP/
+
+## to create a backup run:
+
+sh ./data/scripts/create-backup.sh
 
 ## ~~#1 - ER-DIAGRAM DONE~~
 
