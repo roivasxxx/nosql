@@ -1,5 +1,6 @@
 load("./data/scripts/auth.js");
 
+console.debug("CREATING FACULTIES");
 db.createCollection("faculties", {
   validator: {
     $jsonSchema: {
@@ -21,6 +22,7 @@ db.createCollection("faculties", {
   }
 });
 
+console.debug("CREATING COURSES");
 db.createCollection("courses", {
   validator: {
     $jsonSchema: {
@@ -46,6 +48,7 @@ db.createCollection("courses", {
   }
 });
 
+console.debug("CREATING THREADS");
 db.createCollection("threads", {
   validator: {
     $jsonSchema: {
@@ -75,6 +78,7 @@ db.createCollection("threads", {
   }
 });
 
+console.debug("CREATING POSTS");
 db.createCollection("posts", {
   validator: {
     $jsonSchema: {
@@ -116,6 +120,7 @@ db.createCollection("posts", {
   }
 });
 
+console.debug("CREATING USERS");
 db.createCollection("users", {
   validator: {
     $jsonSchema: {
@@ -163,6 +168,7 @@ db.createCollection("users", {
   }
 });
 
+console.debug("CREATING CONVERSATIONS");
 db.createCollection("conversations", {
   validator: {
     $jsonSchema: {
@@ -182,6 +188,7 @@ db.createCollection("conversations", {
   }
 });
 
+console.debug("CREATING CONVERSATION MESSAGES");
 db.createCollection("conversation_messages", {
   validator: {
     $jsonSchema: {
@@ -210,6 +217,7 @@ db.createCollection("conversation_messages", {
   }
 });
 
+console.debug("CREATING NOTIFICATIONS");
 db.createCollection("notifications", {
   validator: {
     $jsonSchema: {
@@ -243,3 +251,5 @@ db.createCollection("notifications", {
     }
   }
 });
+
+console.debug("create-collections.js FINISHED");
