@@ -9,6 +9,12 @@ docker exec -it mongodb bash
 
     mongosh --username root --password password --authenticationDatabase admin
 
+
+# validation errors
+bellow command needs to be run in mongosh -> docker restarted in order to get detailed validation errors
+db.adminCommand( { setFeatureCompatibilityVersion: "5.0" } )
+
+
 # to load file
 
 mongosh --username root --password password --authenticationDatabase admin ./tmp/faculties.js
