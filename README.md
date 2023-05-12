@@ -18,6 +18,12 @@ mongo-express available at http://localhost:8081
 
 mongosh --username root --password password --authenticationDatabase admin ./tmp/faculties.js
 
+# COLLECTIONS
+
+## to create collections run:
+
+sh ./data/scripts/create-collections.sh
+
 # VALIDATION
 
 ## bellow command needs to be run in mongosh -> docker restarted in order to get detailed validation errors
@@ -38,29 +44,27 @@ bash ./data/scripts/import-data.sh
 
 sh ./data/scripts/create-backup.sh
 
-## ~~#1 - ER-DIAGRAM DONE~~
+## ~~#1 - ER-DIAGRAM~~
 
-## ~~#2 - docker file DONE~~
+## ~~#2 - docker file~~
 
 ## #3 - validation schema description
 
-## #4 - 2 processes - adding new data, updating, deleting etc
+## ~~#4 - script that creates collections according to er-diagram~~
 
-## #5 - 5 nontrivial queries
+## ~~#5 - script that loads collection data~~
 
-## #6 - script to load schemas
+## #6 - ~~2 processes - adding new data, updating, deleting etc~~
 
-## #7 - script to load dataset
+## ~~#7 - 5 nontrivial queries~~
 
-## #8 - script that tests out queries from #5
+## #8 - script that tests out queries from #7
 
-## #9 - script that tests validation -> inserting invalid data
+## ~~#9 - script that tests validation -> inserting invalid data~~
 
-## #10 - replication?
+## ~~#10 - script that creates a database backup~~
 
-## #11 - script that creates a database backup
-
-## #12 - script that delete all data
+## ~~#11 - script that deletes db~~
 
 # misc
 
