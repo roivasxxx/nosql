@@ -42,10 +42,11 @@ dotenv.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use(express_1.default.json());
-console.log(process.env.PORT);
-const mongoUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@127.0.0.1:27017/krajta-clone?replicaSet=replSet&authSource=admin&directConnection=true`;
+console.log("ENV:", process.env.PORT, process.env.DB_USER);
+const mongoUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PW}@mongodb:27017/krajta-clone?replicaSet=replSet&authSource=admin&directConnection=true`;
 let mongo;
 const initMongo = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.debug("CONNECTING TO MONGO");
     mongo = yield mongodb_1.MongoClient.connect(mongoUrl);
     const db = mongo.db("krajta-clone");
     const collections = yield db.collections();
