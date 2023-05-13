@@ -40,6 +40,8 @@ services:
       - mongodb
     networks:
       - docker-net
+    environment:
+      MONGO_PATH: mongodb
 
 networks:
   docker-net:
