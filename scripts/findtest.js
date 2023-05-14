@@ -1,6 +1,4 @@
-db = connect(
-  "mongodb://root:password@127.0.0.1:27017/test?replicaSet=replSet&authSource=admin&directConnection=true"
-);
+load("./data/scripts/auth.js");
 
 // const faculties = db.faculties.find();
 
@@ -14,60 +12,58 @@ db = connect(
 // print(facultiesLen);
 
 /**
- * Function that add a new thread and updates thread_count for given course
+ * Function that adds a new thread
  * @param {*} _threadData - thread data => title, author
  * @param {string} courseName - name of course - TODO: replace with _id
  */
-const addNewThread = (_threadData, courseName, postData) => {
-  const courses = db.courses.find({ name: courseName }, { _id: 1 });
+const addNewThread = (_threadData, _courseId, postData) => {
+  console.debug("CREATING NEW THREAD", _courseId);
+  try {
+    // first we check whether course exists
+    const coursesQuery = db.courses.find({ _id: _courseId }, { _id: 1 });
 
-  const { _id: courseId } = courses.hasNext() ? courses.next() : null;
+    const courses = coursesQuery.toArray();
 
-  if (!courseId) {
-    console.error(
-      `Can not add thread, because no course with courseName=${courseName} was found.`
-    );
-    return;
+    const courseId = courses.length > 0 ? courses[0]._id : null;
+    // if course does not exist no thread is created
+    if (!courseId) {
+      console.error(
+        `Can not add thread, because no course with courseName=${courseName} was found.`
+      );
+      return;
+    }
+
+    const threadData = { ..._threadData, course_id: courseId };
+
+    const threadInsertResult = db.threads.insertOne(threadData);
+    // we save the id of the newly created thread doc
+    const threadId = threadInsertResult.insertedId;
+
+    console.debug("INSERTED THREAD: ", threadId);
+
+    // we use it to create a new post for the newly created thread
+    const postInsertResult = db.posts.insertOne({
+      ...postData,
+      thread_id: threadId
+    });
+
+    console.debug("INSERTED POST: ", postInsertResult.insertedId);
+
+    console.debug("THREAD CREATED");
+  } catch (error) {
+    console.error("ERROR HAS OCCURED WHILE CREATING NEW THREAD: ", error);
   }
-
-  const threadData = { ..._threadData, course_id: courseId };
-
-  console.log(`Course objectId: ${courseId}`);
-
-  const threadsCount = db.threads.countDocuments({ course_id: courseId });
-
-  console.log("Threads count: ", threadsCount);
-
-  const threadInsertResult = db.threads.insertOne(threadData);
-
-  console.debug("INSERTED THREAD", threadInsertResult.insertedId);
-
-  const postInsertResult = db.posts.insertOne({
-    ...postData,
-    thread_id: threadInsertResult.insertedId
-  });
-
-  console.debug("INSERTED POST", postInsertResult);
-
-  const courseUpdateResult = db.courses.updateOne({ _id: courseId }, [
-    { $set: { thread_count: threadsCount + 1 } }
-  ]);
-
-  console.debug("UPDATED COURSE COUNT", courseUpdateResult);
 };
-//testing user id ObjectId("643e670e2364bc4a4efda47f"
-// addNewThread(
-//   {
-//     title: "New thread for ZMAT1 #2",
-//     author: "ADMIN"
-//   },
-//   "Základy matematiky 1",
-//   {
-//     author_id:ObjectId("643e670e2364bc4a4efda47f"),
-//     created_at:new Date(),
-//     text:"Testing posts"
-//   }
-// );
+
+addNewThread(
+  { author: ObjectId("64564a5ba8e6b2be1979f261"), title: "Test title" },
+  ObjectId("64564484ed04ad823ebc9a81"),
+  {
+    author_id: ObjectId("64564a5ba8e6b2be1979f261"),
+    created_at: new Date(),
+    text: "Testing new thread + post"
+  }
+);
 
 const addNewPost = (threadId, _postData) => {
   const threads = db.threads.find({ _id: threadId });
@@ -194,7 +190,7 @@ const deleteUser = (userId) => {
 
 const createConversation = (user1, user2) => {
   try {
-    const conversationQuery = db.Conversations.insertOne({ user1, user2 });
+    const conversationQuery = db.conversations.insertOne({ user1, user2 });
     console.debug("INSERT CONVERSATION RESULT: ", conversationQuery);
 
     return conversationQuery.insertedId;
@@ -229,32 +225,36 @@ const sendMessage = (authorId, recipientId, message) => {
     return;
   }
   //get existing conversation id
-  const existingConversation = db.Conversations.find(
-    {
-      $or: [
-        {
-          $and: [{ user1: authorId }, { user2: recipientId }]
-        },
-        {
-          $and: [{ user1: recipientId }, { user2: authorId }]
-        }
-      ]
-    },
-    { _id: 1 }
-  ).toArray();
+  const existingConversation = db.conversations
+    .find(
+      {
+        $or: [
+          {
+            $and: [{ user1: authorId }, { user2: recipientId }]
+          },
+          {
+            $and: [{ user1: recipientId }, { user2: authorId }]
+          }
+        ]
+      },
+      { _id: 1 }
+    )
+    .toArray();
 
-  //get conversationId
+  console.debug("existing conversation:", existingConversation);
+
+  //get conversationId - either use id of document found in previous step or create a new conversation
   let conversationId =
     existingConversation.length === 0
       ? createConversation(authorId, recipientId)
-      : existingConversation[1];
+      : existingConversation[0]._id;
   if (!conversationId) {
     console.error("Can not create conversation");
     return;
   }
 
   //create message
-  const messagesQuery = db.ConversationMessages.insertOne({
+  const messagesQuery = db.conversation_messages.insertOne({
     ...message,
     conversation_id: conversationId,
     created_at: new Date(),
@@ -267,7 +267,7 @@ const sendMessage = (authorId, recipientId, message) => {
 };
 
 sendMessage(
-  ObjectId("644427022dec6e9fd9e410ba"),
-  ObjectId("6444277a8f8e59687d507b26"),
+  ObjectId("64564a5ba8e6b2be1979f261"),
+  ObjectId("64564a5ba8e6b2be1979f264"),
   { message: "testing messages" }
 );

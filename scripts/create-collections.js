@@ -53,11 +53,15 @@ db.createCollection("threads", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["course_id", "title"],
+      required: ["course_id", "title", "author"],
       properties: {
         course_id: {
           bsonType: "objectId",
           description: "ObjectId of an object from courses collection"
+        },
+        author: {
+          bsonType: "objectId",
+          description: "ObjectId of thread author"
         },
         title: {
           bsonType: "string",

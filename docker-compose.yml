@@ -29,6 +29,8 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongodb
       # use the name of the mongo container above for server env var.
       # In our case this is mongodb
+    networks:
+      - docker-net
   nodejs-app:
     build:
       context: ./backend/
