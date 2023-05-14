@@ -1,16 +1,5 @@
 load("./data/scripts/auth.js");
 
-// const faculties = db.faculties.find();
-
-// let facultiesLen = 0;
-
-// faculties.forEach(() => {
-//   printjson;
-//   facultiesLen++;
-// });
-
-// print(facultiesLen);
-
 /**
  * Function that adds a new thread
  * @param {*} _threadData - thread data => title, author
@@ -65,57 +54,12 @@ addNewThread(
   }
 );
 
-const addNewPost = (threadId, _postData) => {
-  const threads = db.threads.find({ _id: threadId });
-
-  const threadObject = threads.hasNext() ? threads.next() : null;
-
-  if (!threadObject) {
-    console.error(
-      `Can not add post,bceause thread with provided threadId:${threadId} was not found. `
-    );
-    return;
-  }
-
-  console.debug("CURRENT THREAD COUNT:", threadObject);
-
-  const postInsertResult = db.posts.insertOne({
-    ..._postData,
-    thread_id: threadId
-  });
-
-  console.debug("POST INSERT RESULT: ", postInsertResult);
-
-  const postId = postInsertResult.insertedId;
-
-  const threadUpdateResult = db.threads.updateOne(
-    { _id: threadId },
-    {
-      $set: {
-        post_count: threadObject.post_count ? threadObject.post_count + 1 : 1,
-        last_post: postId
-      }
-    }
-  );
-
-  console.debug("THREAD UPDATE RESULT: ", threadUpdateResult);
-};
-
-//db.courses.find({post_count:{$exists:false}}) checking if field exists
-//test thread ObjectId("643e6a29adfd24a0268a4b25")
-
-// addNewPost(ObjectId("643e6a29adfd24a0268a4b25"), {
-//   author_id: ObjectId("643e670e2364bc4a4efda47f"),
-//   created_at: new Date(),
-//   text: "Testing posts"
-// });
-
-//user - ObjectId("643c1780692fd0f1a8cc9ef3") , user2 - ObjectId("644427022dec6e9fd9e410ba")
-//ObjectId("644427858f8e59687d507b27")
-//ObjectId("6444277a8f8e59687d507b26")
-//ObjectId("644427558f8e59687d507b25")
+// deletes user
+// deletes userId out of notification array of all threads
+// should probably delete existing notifications, conversations, conversation_messages ?
+// maybe a soft delete (mark as deleted) should occur instead of deleting the document ?
 const deleteUser = (userId) => {
-  //delete user
+  console.debug("DELETING USER: ", userId);
 
   const userQuery = db.users.find({ _id: userId });
   const user = userQuery.hasNext() ? userQuery.next() : null;
@@ -131,50 +75,9 @@ const deleteUser = (userId) => {
 
   console.debug("USER DELETE RESULT: ", deleteUserQuery);
 
-  //find conversations
-  const conversations = db.Conversations.find({
-    $or: [{ user1: userId }, { user2: userId }]
-  }).toArray();
-
-  //check which ones should be deleted/updated
-  const conversationsToDelete = [];
-  const conversationsToUpdate = [];
-  conversations.forEach((item) => {
-    if (!item.user1 || !item.user2) {
-      conversationsToDelete.push(item._id);
-    } else {
-      conversationsToUpdate.push(item._id);
-    }
-  });
-  //delete conversations where user1=user2=null
-  const conversationsDeleteQuery = db.Conversations.deleteMany({
-    _id: { $in: conversationsToDelete }
-  });
-
-  console.debug("CONVERSATIONS DELETE RESULT: ", conversationsDeleteQuery);
-
-  //update conversations
-  const conversationsUpdateQuery = db.Conversations.updateMany(
-    { _id: { $in: conversationsToUpdate } },
-    [
-      {
-        $set: {
-          user1: {
-            $cond: [{ $eq: ["$user1", userId] }, null, "$user1"]
-          },
-          user2: {
-            $cond: [{ $eq: ["$user2", userId] }, null, "$user2"]
-          }
-        }
-      }
-    ]
-  );
-
-  console.debug("CONVERSATIONS UPDATE QUERY: ", conversationsUpdateQuery);
-
-  const threadUserNotificationQuery = db.Threads.updateMany(
+  const threadUserNotificationQuery = db.threads.updateMany(
     {},
-    { $pull: { users: userId } }
+    { $pull: { notifications: userId } }
   );
 
   console.debug(
@@ -182,12 +85,17 @@ const deleteUser = (userId) => {
     threadUserNotificationQuery
   );
 
-  console.debug("ENDING");
+  console.debug("DELETE USER FINISHED");
 };
 
-//db.Conversations.updateOne({_id:ObjectId("6444287781c35de3cc0406ba")},[{$set:{user1:"$user2"}}])
-//deleteUser(ObjectId("643c1780692fd0f1a8cc9ef3"));
+deleteUser(ObjectId("64564a5ba8e6b2be1979f262"));
 
+/**
+ * helper function that creates conversations and returns newly created conversation id
+ * @param {*} user1
+ * @param {*} user2
+ * @returns ObjectId
+ */
 const createConversation = (user1, user2) => {
   try {
     const conversationQuery = db.conversations.insertOne({ user1, user2 });
@@ -203,6 +111,12 @@ const createConversation = (user1, user2) => {
   }
 };
 
+/**
+ * Checks whether both users exist
+ * @param {*} user1
+ * @param {*} user2
+ * @returns {boolean}
+ */
 const areUsersValid = (user1, user2) => {
   const users = db.users
     .find({ $or: [{ _id: user1 }, { _id: user2 }] })
@@ -213,9 +127,14 @@ const areUsersValid = (user1, user2) => {
   return false;
 };
 
-// ObjectId("644427022dec6e9fd9e410ba")
-//ObjectId('6444277a8f8e59687d507b26')
-
+/**
+ * Function that checks whether users are valid
+ * checks whether conversation between users exist
+ * creates new conversation_messages document
+ * @param {*} authorId
+ * @param {*} recipientId
+ * @param {*} message
+ */
 const sendMessage = (authorId, recipientId, message) => {
   //check if users exist
   if (!areUsersValid) {
