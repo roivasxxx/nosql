@@ -1,0 +1,147 @@
+:root {
+  --background: #0d1117;
+  --text-bg: #161b22;
+  --text-marker: #343941;
+  --h-color: #e6ecef;
+  --underline: #191e24;
+  --text-hover: #1856c9;
+}
+
+html,
+body {
+  background-color: var(--background);
+}
+
+.App {
+  color: var(--h-color);
+  background-color: var(--background);
+  margin-top: 5px;
+  line-height: 2rem;
+}
+
+.App h1,
+h2 {
+  text-align: center;
+}
+.App p {
+  margin: 2px;
+}
+
+.App a {
+  text-decoration: none;
+  color: var(--h-color);
+}
+
+.App p,
+li {
+  margin: 0;
+  font-size: 14px;
+}
+
+.App ul {
+  margin: 2px;
+}
+
+.App mark {
+  background-color: var(--text-marker);
+  padding: 3px;
+  border-radius: 5px;
+  color: var(--h-color);
+}
+
+.App h4 {
+  margin: 5px 0 5px 0;
+}
+
+.task {
+  width: 100%;
+}
+
+.task span {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: var(--underline);
+}
+
+.task > .content {
+  padding: 5px;
+}
+
+.hidden-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.hidden-task p {
+  font-size: 16px;
+  color: var(--text-hover);
+}
+.hidden-task p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.code-textarea {
+  resize: none;
+  width: 100%;
+  max-height: 400px;
+  background-color: var(--text-bg);
+  color: var(--h-color);
+  border-radius: 5px;
+  border-color: var(--text-bg);
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.list-elem {
+  background-color: var(--text-marker);
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.list-wrapper li {
+  font-size: 12px;
+}
+.list-wrapper p {
+  margin: 0px;
+  font-size: 14px;
+}
+
+.sticky {
+  position: "fixed";
+  top: 0;
+}
+
+.nav {
+  height: 70px;
+  background-color: var(--text-bg);
+  width: 100%;
+  padding: 0 25px 0 25px;
+  display: grid;
+}
+
+.nav div {
+  justify-self: center;
+  align-self: center;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav a {
+  font-size: 14px;
+}
+.nav a:hover {
+  color: var(--text-hover);
+  text-decoration: underline;
+}
+
+.content {
+  padding: 15px;
+}

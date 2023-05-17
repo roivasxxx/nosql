@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:6.0.4 # use the latest image.
+    container_name: mongodb
+    restart: unless-stopped
+    environment: # set required env variables to access mongo
+      MONGO_USER: root
+      MONGO_PW: password
+      DB_NAME: krajta-clone
+    ports:
+      - 27017:27017
+    volumes: # optional to preserve database after container is deleted.
+      - ./database-data:/data/db
+      - ./scripts:/data/scripts
+    networks:
+      - docker-net
+
+  # Mongo Express Service
+  mongo-express:
+    image: mongo-express:latest # latest image
+    container_name: mongo-express
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      # use the name of the mongo container above for server env var.
+      # In our case this is mongodb
+    networks:
+      - docker-net
+  nodejs-app:
+    build:
+      context: ./backend/
+    container_name: nosql-api
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongodb
+    networks:
+      - docker-net
+    environment:
+      MONGO_PATH: mongodb
+
+networks:
+  docker-net:

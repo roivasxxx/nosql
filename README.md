@@ -48,7 +48,7 @@ sh ./data/scripts/create-backup.sh
 
 ## ~~#2 - docker file~~
 
-## #3 - validation schema description
+## ~~#3 - validation schema description~~
 
 ## ~~#4 - script that creates collections according to er-diagram~~
 
@@ -65,7 +65,3 @@ sh ./data/scripts/create-backup.sh
 ## ~~#10 - script that creates a database backup~~
 
 ## ~~#11 - script that deletes db~~
-
-# misc
-
-load script -> load("myjstest.js")

@@ -4,3 +4,4 @@
 /scripts/validation-output.json
 /backend/node_modules
 .vscode
+/protocol/node_modules

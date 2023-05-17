@@ -1,0 +1,22 @@
+STARTING BACKUP
+2023-05-17T14:05:38.381+0000    writing krajta-clone.threads to backup/krajta-clone/threads.bson
+2023-05-17T14:05:38.381+0000    writing krajta-clone.posts to backup/krajta-clone/posts.bson
+2023-05-17T14:05:38.381+0000    writing krajta-clone.notifications to backup/krajta-clone/notifications.bson
+2023-05-17T14:05:38.390+0000    done dumping krajta-clone.threads (1013 documents)
+2023-05-17T14:05:38.390+0000    writing krajta-clone.users to backup/krajta-clone/users.bson
+2023-05-17T14:05:38.398+0000    done dumping krajta-clone.posts (1010 documents)
+2023-05-17T14:05:38.399+0000    writing krajta-clone.conversations to backup/krajta-clone/conversations.bson
+2023-05-17T14:05:38.407+0000    done dumping krajta-clone.notifications (1000 documents)
+2023-05-17T14:05:38.407+0000    writing krajta-clone.courses to backup/krajta-clone/courses.bson
+2023-05-17T14:05:38.418+0000    done dumping krajta-clone.users (997 documents)
+2023-05-17T14:05:38.419+0000    writing krajta-clone.faculties to backup/krajta-clone/faculties.bson
+2023-05-17T14:05:38.423+0000    done dumping krajta-clone.courses (400 documents)
+2023-05-17T14:05:38.423+0000    writing krajta-clone.ConversationMessages to backup/krajta-clone/ConversationMessages.bson
+2023-05-17T14:05:38.429+0000    done dumping krajta-clone.conversations (502 documents)
+2023-05-17T14:05:38.429+0000    writing krajta-clone.Conversations to backup/krajta-clone/Conversations.bson
+2023-05-17T14:05:38.434+0000    writing krajta-clone.conversation_messages to backup/krajta-clone/conversation_messages.bson
+2023-05-17T14:05:38.436+0000    done dumping krajta-clone.conversation_messages (1006 documents)
+2023-05-17T14:05:38.439+0000    done dumping krajta-clone.faculties (4 documents)
+2023-05-17T14:05:38.450+0000    done dumping krajta-clone.Conversations (1 document)
+2023-05-17T14:05:38.462+0000    done dumping krajta-clone.ConversationMessages (1 document)
+FINISHED BACKING UP, BACKED UP DATA AVAILABLE IN DOCKER FILES AT ./BACKUP/
