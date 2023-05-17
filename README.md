@@ -1,5 +1,9 @@
 # nosql school course
 
+## the protocol page is hosted on - I made it in react so its not just an ugly static webpage
+
+https://6464fb4462fcad0b8e9d5a0d--cozy-cajeta-5c6372.netlify.app
+
 ## run with
 
 docker-compose up -d
