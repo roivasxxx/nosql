@@ -13,7 +13,7 @@ function App() {
   const [state, setState] = useState({
     dockerCompose: "",
     collections: "",
-    insertData: "",
+    insertdata: "",
     apilogic: "",
     queries: {
       first: "",
@@ -113,7 +113,7 @@ function App() {
     <div className="App">
       <header>
         <h1>Semestrální projekt - NoSQL 2023</h1>
-        <h2>Patrik Pahulák</h2>
+        <h2>Patrik Pahulák - pahulpa1@uhk.cz</h2>
       </header>
       <nav
         className="nav"
